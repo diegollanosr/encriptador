@@ -1,6 +1,8 @@
-const encriptar = document.getElementById("button__encriptar");
-const desencriptar = document.getElementById("button__desencriptar");
-const copy = document.getElementById("button__copiar");
+const encriptar = document.getElementById("buttonEncriptarS");
+const desencriptar = document.getElementById("buttonDesencriptarS");
+const encriptarSS = document.getElementById("buttonEncriptarSS");
+const desencriptarSS = document.getElementById("buttonDesencriptarSS");
+const copy = document.getElementById("buttonCopiar");
 const textoInicial = document.getElementById("textoInput");
 const textFinal = document.getElementById("textoFinal");
 const rightImagen = document.getElementById("rightImagen");
@@ -8,28 +10,28 @@ const textInfo = document.getElementById("textoInfo");
 const rigth = document.getElementById("rigth")
 
 const remplace = (newvalue) => {
-    textFinal.innerHTML = newvalue;
-    textFinal.classList.add("ajustar");
-    rigth.classList.add("ajustar")
+    // textFinal.innerHTML = newvalue;
+    textFinal.value = newvalue
     textoInicial.value = "";
     textoInicial.style.height = "auto"
-    textoInicial.placeholder = "Ingrese el texto aquí";
+    textFinal.classList.add("ajustar");
+    rigth.classList.add("ajustar")
     rightImagen.classList.add("ocultar");
     textInfo.classList.add("ocultar");
     copy.classList.remove("bn_ocultar");
+    // textoInicial.placeholder = "Ingrese el texto aquí";
 }
 
 const reset = () => {
-    textoInicial.innerHTML = "";
     textoInicial.style.height = "auto";
-    textFinal.innerHTML = "";
     rigth.classList.remove("ajustar")
     textFinal.classList.remove("ajustar");
     rightImagen.classList.remove("ocultar");
-    textFinal.placeholder = "Ningún mensaje fue encontrado";
     textInfo.classList.remove("ocultar")
     copy.classList.add("bn_ocultar");
-    textoInicial.focus();
+    // textFinal.innerHTML = "";
+    textFinal.value = "";
+    textoInicial.value = "";
 };
 
 let remplazar = [
@@ -65,7 +67,7 @@ let remplazar = [
 		["m", "b2d"],
 		["c", "3d3"],
 		["s", "o8j"],
-		["k", "1x2"],
+		["k", "1x7"],
 		["r", "3dü"],
 		["v", "xsm"],
 		["f", "dlr"],
@@ -78,15 +80,31 @@ let remplazar = [
 		["p", "yíd"],
 		["q", "z0f"],
 ];
-	
 
+const newAlert = (mensaje, icono, color, alertTitle, title) => {
+    swal.fire({
+        title: `<span class=${alertTitle}>${title}</span>`,
+        html: `<span class='alertMessage'>${mensaje}</span>`,
+        icon: `${icono}`,
+        iconColor: `${color}`,
+        background: "#2d2c2e",
+        timer: 1500,
+        allowOutsideClick: true,
+        allowEscapeKey: true,
+        allowEnterKey: true,
+        stopKeydownPropagation: false,
+        showConfirmButton: true,
+        confirmButtonColor: "#295afa",
+        confirmButtonAriaLabe: "Confirmar",
+        didClose: textoInicial.focus(),
+    })
+};
 
 encriptar.addEventListener('click', () => {
-
     const texto = textoInicial.value.toLowerCase();
-
     if (texto != "") {
         function encript(newtext) {
+            //for (let i = 38; i >= 0; i--){
             for (let i = 0; i < remplazar.length; i++) {
                 if (newtext.includes(remplazar[i][0])) {
                     newtext = newtext.replaceAll(remplazar[i][0], remplazar[i][1]);
@@ -96,17 +114,56 @@ encriptar.addEventListener('click', () => {
         };
         remplace(encript(texto));
     } else {
-        alert("Ingrese texto para encriptar");
+        newAlert("Ingrese texto a encriptar", "error", "#fd1f4a", "errorTitle", "Ocurrió un Error")
         reset();
     };
 });
 
 desencriptar.addEventListener('click', () => {
-
     const texto = textoInicial.value.toLowerCase();
-
     if (texto != "") {
-        function desencript(newtext) {
+        function encript(newtext) {
+            for (let i = 38; i >= 0; i--){
+            //for (let i = 0; i < remplazar.length; i++) {
+                if (newtext.includes(remplazar[i][1])) {
+                    newtext = newtext.replaceAll(remplazar[i][1], remplazar[i][0]);
+                };
+            };
+            return newtext;
+        };
+        remplace(encript(texto));
+    } else {
+        newAlert("Ingrese texto a desencriptar", "error", "#fd1f4a", "errorTitle", "Ocurrió un Error")
+        reset();
+    };
+});
+
+
+encriptarSS.addEventListener('click', () => {
+    const texto = textoInicial.value.toLowerCase();
+    if (texto != "") {
+        function encript(newtext) {
+            for (let i = 38; i >= 0; i--){
+            //for (let i = 0; i < remplazar.length; i++) {
+                if (newtext.includes(remplazar[i][0])) {
+                    newtext = newtext.replaceAll(remplazar[i][0], remplazar[i][1]);
+                };
+            };
+            return newtext;
+        };
+        remplace(encript(texto));
+    } else {
+        newAlert("Ingrese texto a encriptar", "error", "#fd1f4a", "errorTitle", "Ocurrió un Error")
+        reset();
+    };
+
+});
+
+desencriptarSS.addEventListener('click', () => {
+    const texto = textoInicial.value.toLowerCase();
+    if (texto != "") {
+        function encript(newtext) {
+            //for (let i = 38; i >= 0; i--) {
             for (let i = 0; i < remplazar.length; i++) {
                 if (newtext.includes(remplazar[i][1])) {
                     newtext = newtext.replaceAll(remplazar[i][1], remplazar[i][0]);
@@ -114,9 +171,9 @@ desencriptar.addEventListener('click', () => {
             };
             return newtext;
         };
-        remplace(desencript(texto));
+        remplace(encript(texto));
     } else {
-        alert("Ingrese texto a desencriptar");
+        newAlert("Ingrese texto a desencriptar", "error", "#fd1f4a", "errorTitle", "Ocurrió un Error")
         reset();
     };
 });
@@ -125,9 +182,9 @@ copy.addEventListener("click", () => {
     let texto = textFinal;
     texto.select();
     document.execCommand('copy');
-    //navigator.clipboard.writeText(texto.value);
-    //clipboard función no compatible con móviles
-    alert("Texto Copiado");
+    // navigator.clipboard.writeText(texto.value);
+    // clipboard función no compatible con móviles
+    newAlert("Texto Copiado", "success", "#20bb20", "acepTitle", "Mensaje Copiado");
     reset();
 });
 //auto ajuste de textarea
